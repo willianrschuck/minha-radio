@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence
+	xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+        http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+
+	<!-- O nome da unidade de persistência que o EntityManager irá buscar -->
+	<persistence-unit name="RadioPU">
+
+		<!-- A implementação do JPA -->
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+	
+		<properties>
+		
+			<!-- O driver JDBC utilizado -->
+			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+			
+			<!-- URL do banco de dados -->
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/radio"/>
+
+			<!-- Usuário e senha do banco -->
+			<property name="javax.persistence.jdbc.user" value="postgres"/>
+			<property name="javax.persistence.jdbc.password" value="postgres"/>
+			
+			
+			<!-- Configurações específicas do Hibernate -->
+			
+			<!-- Define o tipo de driver para a conexão com o banco -->
+			<!-- Segundo a documentação: https://docs.jboss.org/hibernate/orm/current/javadocs/org/hibernate/dialect/package-summary.html -->
+			<!-- a classe org.hibernate.dialect.PostgreSQLDialect foi depreceada e deve-se utilizar org.hibernate.dialect.PostgreSQL82Dialect -->
+			<!-- em seu lugar. -->
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect"/>
+			
+			<!-- Estratégia de criação/atualização do banco -->
+			<property name="hibernate.hbm2ddl.auto" value="update"/> <!-- create / update / create-drop -->
+			
+			<property name="hibernate.show_sql" value="true"/>
+			<property name="hibernate.format_sql" value="true"/>
+		
+		</properties>
+	
+	</persistence-unit>
+    
+</persistence>
