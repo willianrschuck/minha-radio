@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-@Entity(name = "estado")
+@Entity
 @Table(name = "estado")
 public class Estado implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -37,6 +37,23 @@ public class Estado implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	
+	@Override
+	public String toString() {
+		return nome;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (!(obj instanceof Estado)) {
+			return false;
+		}
+		
+		Estado estado = (Estado) obj;
+		return id == estado.id;
+		
 	}
 	
 }

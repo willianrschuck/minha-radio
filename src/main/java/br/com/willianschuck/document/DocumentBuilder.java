@@ -23,7 +23,9 @@ public class DocumentBuilder {
 	private ByteArrayOutputStream os;
 	private Document document;
 	
+	@SuppressWarnings("unused")
 	private PdfFont baseFont;
+	
 	private PdfFont baseFontBold;
 
 	private Style baseStyle;
