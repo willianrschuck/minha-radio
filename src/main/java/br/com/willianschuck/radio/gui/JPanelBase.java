@@ -15,10 +15,13 @@ public abstract class JPanelBase extends JPanel {
 	private Controller controller;
 	
 	private JToolBar toolBar;
-	private JComponent contentPane;
+	private JComponent content;
 	
-	public JPanelBase(Controller controller) {
+	private String cardName;
+	
+	public JPanelBase(Controller controller, String cardName) {
 		this.controller = controller;
+		this.cardName = cardName;
 	}
 
 	protected void initComponents() {
@@ -36,24 +39,28 @@ public abstract class JPanelBase extends JPanel {
 		toolBar.add(btn);
 	}
 	
-	public final void setContentPane(JComponent contentPane) {
+	public final void setContent(JComponent contentPane) {
 		
-		if (this.contentPane == null) {
-			updateContentPane(contentPane);
+		if (this.content == null) {
+			updateContent(contentPane);
 		} else {
-			remove(this.contentPane);
-			updateContentPane(contentPane);
+			remove(this.content);
+			updateContent(contentPane);
 		}
 		
 	}
 
-	private void updateContentPane(JComponent contentPane) {
-		this.contentPane = contentPane;
-		add(contentPane, BorderLayout.CENTER);
+	private void updateContent(JComponent content) {
+		this.content = content;
+		add(content, BorderLayout.CENTER);
 	}
 	
 	protected final Controller controller() {
 		return controller;
+	}
+	
+	public String getCardName() {
+		return cardName;
 	}
 	
 }

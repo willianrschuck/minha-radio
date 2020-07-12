@@ -12,7 +12,7 @@ import br.com.willianschuck.radio.model.Contrato;
 import br.com.willianschuck.radio.model.Emissora;
 import br.com.willianschuck.radio.model.Endereco;
 import br.com.willianschuck.radio.model.Estado;
-import br.com.willianschuck.radio.report.PrintContrato;
+import br.com.willianschuck.radio.report.ContratoReport;
 
 public class TesteDeImpressao {
 
@@ -46,7 +46,7 @@ public class TesteDeImpressao {
 		
 		Contrato contrato = new Contrato();
 		contrato.setCliente(mercadoGaucho);
-		contrato.setRadio(radio);
+		contrato.setEmissora(radio);
 		contrato.setDataInicio(new Date());
 		
 		
@@ -55,7 +55,7 @@ public class TesteDeImpressao {
 		SimpleDateFormat sdf = new SimpleDateFormat("hh-mm-ss_dd-MM-yyyy");
 		String dest = sdf.format(new Date()) + ".pdf";
 		
-		byte[] generate = new PrintContrato().generate(contrato);
+		byte[] generate = new ContratoReport().generate(contrato);
 		
 		OutputStream os = new FileOutputStream("./"+dest);
 		os.write(generate);

@@ -30,6 +30,10 @@ public class JFramePrincipal extends JFrame {
 		pnlCard.add(panel, name);
 	}
 	
+	public void addCard(JPanelBase panel) {
+		pnlCard.add(panel, panel.getCardName());
+	}
+	
 	public void viewCard(String name) {
 		cardLayout.show(pnlCard, name);
 	}

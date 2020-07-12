@@ -1,3 +1,4 @@
 .*
 !.gitignore
 target/
+bd_prop.json

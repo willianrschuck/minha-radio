@@ -8,5 +8,5 @@ public class ContratoDAO extends DAO<Contrato> {
 	public Class<Contrato> getEntityClass() {
 		return Contrato.class;
 	}
-	
+
 }

@@ -20,4 +20,9 @@ public class StringUtils {
 	public static boolean isNotBlank(String s) {
 		return !isBlank(s);
 	}
+	
+	public static boolean validateLenght(String s, int minLenght, int maxLenght) {
+		return !isNull(s) && s.length() >= minLenght && s.length() <= maxLenght;
+	}
+	
 }

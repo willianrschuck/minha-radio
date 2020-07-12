@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "estado")
-public class Estado implements Serializable {
+public class Estado extends Entidade implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

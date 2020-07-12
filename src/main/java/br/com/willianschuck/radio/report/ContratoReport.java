@@ -25,7 +25,7 @@ import br.com.willianschuck.document.DocumentBuilder;
 import br.com.willianschuck.radio.model.Contrato;
 import br.com.willianschuck.radio.model.Endereco;
 
-public class PrintContrato {
+public class ContratoReport {
 	
 	private SimpleDateFormat dateFormater = new SimpleDateFormat("dd/MM/yyyy");
 	
@@ -94,8 +94,8 @@ public class PrintContrato {
 		
 		Table table = db.createTable(12);
 
-		String nomeFantasia = contrato.getRadio().getNomeFantasia();
-		Endereco endereco = contrato.getRadio().getEndereco();
+		String nomeFantasia = contrato.getEmissora().getNomeFantasia();
+		Endereco endereco = contrato.getEmissora().getEndereco();
 		String terms = String.format(initTerms, nomeFantasia, endereco.getLogradouro(), endereco.getNumero(), endereco.getBairro(), endereco.getCidade().getNome(), endereco.getCidade().getEstado().getNome());
 		
         table.addCell(db.createParagraphCell(12, terms));

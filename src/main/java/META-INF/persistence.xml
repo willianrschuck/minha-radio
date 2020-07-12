@@ -14,16 +14,7 @@
 	
 		<properties>
 		
-			<!-- O driver JDBC utilizado -->
-			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-			
-			<!-- URL do banco de dados -->
-			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/radio"/>
-
-			<!-- Usuário e senha do banco -->
-			<property name="javax.persistence.jdbc.user" value="postgres"/>
-			<property name="javax.persistence.jdbc.password" value="postgres"/>
-			
+			<!-- As configurações do banco são carregadas na criação do Entity Manager Factory -->
 			
 			<!-- Configurações específicas do Hibernate -->
 			

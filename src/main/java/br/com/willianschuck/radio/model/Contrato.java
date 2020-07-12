@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "contrato")
-public class Contrato implements Serializable {
+public class Contrato extends Entidade implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -28,7 +28,7 @@ public class Contrato implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "emissora_id", nullable = false)
-	private Emissora radio;
+	private Emissora emissora;
 	
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
@@ -48,7 +48,8 @@ public class Contrato implements Serializable {
 	@Column(name = "precomensal", precision = 5, columnDefinition = "decimal(20,5)", nullable = false)
 	private Double precoMensal;
 	
-	private String discriminacaoDasInsercoes;
+	@Column(name = "discriminacao")
+	private String discriminacaoInsercoes;
 
 	public Integer getId() {
 		return id;
@@ -58,12 +59,12 @@ public class Contrato implements Serializable {
 		this.id = id;
 	}
 
-	public Emissora getRadio() {
-		return radio;
+	public Emissora getEmissora() {
+		return emissora;
 	}
 
-	public void setRadio(Emissora radio) {
-		this.radio = radio;
+	public void setEmissora(Emissora radio) {
+		this.emissora = radio;
 	}
 
 	public Cliente getCliente() {
@@ -74,11 +75,11 @@ public class Contrato implements Serializable {
 		this.cliente = cliente;
 	}
 
-	public int getPrazo() {
+	public Integer getPrazo() {
 		return prazo;
 	}
 
-	public void setPrazo(int prazo) {
+	public void setPrazo(Integer prazo) {
 		this.prazo = prazo;
 	}
 
@@ -106,12 +107,12 @@ public class Contrato implements Serializable {
 		this.precoMensal = precoMensal;
 	}
 
-	public String getDiscriminacaoDasInsercoes() {
-		return discriminacaoDasInsercoes;
+	public String getDiscriminacaoInsercoes() {
+		return discriminacaoInsercoes;
 	}
 
-	public void setDiscriminacaoDasInsercoes(String discriminacaoDasInsercoes) {
-		this.discriminacaoDasInsercoes = discriminacaoDasInsercoes;
+	public void setDiscriminacaoInsercoes(String discriminacaoInsercoes) {
+		this.discriminacaoInsercoes = discriminacaoInsercoes;
 	}
 
 }

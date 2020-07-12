@@ -21,7 +21,7 @@ public class TesteDeContrato {
 		
 		Contrato contrato = new Contrato();
 		contrato.setCliente(mercadoGaucho);
-		contrato.setRadio(radio);
+		contrato.setEmissora(radio);
 		contrato.setDataInicio(new Date());
 		
 		System.out.println(contrato.getCliente().getNome());
