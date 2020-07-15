@@ -18,7 +18,7 @@ import com.itextpdf.layout.property.UnitValue;
 
 public class DocumentBuilder {
 
-	private static float margin = 56.69f; 
+	private static float margin = 36f; 
 	
 	private ByteArrayOutputStream os;
 	private Document document;

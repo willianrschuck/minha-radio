@@ -2,6 +2,8 @@ package br.com.willianschuck.radio.service;
 
 import java.util.List;
 
+import javax.persistence.RollbackException;
+
 import br.com.willianschuck.exception.InvalidValueException;
 import br.com.willianschuck.radio.dao.DAO;
 import br.com.willianschuck.radio.model.Entidade;
@@ -40,7 +42,11 @@ public abstract class Service<T extends Entidade> {
 	}
 
 	public void remover(T contrato) {
-		dao.remove(contrato);
+		try {
+			dao.remove(contrato);
+		} catch (RollbackException e) {
+			throw new RollbackException("A exclusão não pode ser concluída. Existem outros registros referenciando a entidade selecionada.");
+		}
 	}
 	
 	protected DAO<T> getDao() {

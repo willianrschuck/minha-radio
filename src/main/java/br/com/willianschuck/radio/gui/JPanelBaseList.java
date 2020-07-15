@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
@@ -38,6 +39,10 @@ public abstract class JPanelBaseList<T extends Entidade> extends JPanelBase {
 		this.initComponents();
 	}
 	
+	protected abstract DefaultTableModel getDefaultTableModel();
+	
+	protected abstract List<Object[]> getData();
+	
 	@Override
 	protected void initComponents() {
 		super.initComponents();
@@ -61,7 +66,6 @@ public abstract class JPanelBaseList<T extends Entidade> extends JPanelBase {
 				updateToolbarButtons();
 			}
 		});
-		updateToolbarButtons();
 		
 		add(scrPaneTable);
 		
@@ -75,16 +79,28 @@ public abstract class JPanelBaseList<T extends Entidade> extends JPanelBase {
 				actions.editar(getItemSelecionado());
 			}
 		});
+		btnEditar.setEnabled(false);
 		addToolbarItem(btnEditar);
 		
 		btnExcluir = new JButton("Excluir");
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tableModel.removeRow(table.getSelectedRow());
+				remover();
 			}
 		});
+		btnExcluir.setEnabled(false);
 		addToolbarItem(btnExcluir);
 		
+	}
+
+	protected void remover() {
+		try {
+			service.remover(getItemSelecionado());
+			tableModel.removeRow(table.getSelectedRow());
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	protected void updateToolbarButtons() {
@@ -112,10 +128,6 @@ public abstract class JPanelBaseList<T extends Entidade> extends JPanelBase {
 		}
 		
 	}
-	
-	protected abstract DefaultTableModel getDefaultTableModel();
-	
-	protected abstract List<Object[]> getData();
 	
 	public boolean hasItemSelecionado() {
 		return itemSelecionado != null;

@@ -3,6 +3,7 @@ package br.com.willianschuck.radio.validator;
 import java.util.Date;
 
 import br.com.willianschuck.exception.InvalidValueException;
+import br.com.willianschuck.util.DateUtil;
 import br.com.willianschuck.util.EmailUtil;
 import br.com.willianschuck.util.StringUtils;
 
@@ -97,8 +98,7 @@ public class ValidatorUtil {
 	public static void validateDateRange(Date dataFinal, String string, boolean b, Date dataInicio) throws InvalidValueException {
 		
 		if (dataFinal.before(dataInicio)) {
-			// TODO: Refatorar mensagem
-			throw new InvalidValueException("A data final não pode ser anterior a data de início!");
+			throw new InvalidValueException(String.format("O valor do campo %s não pode ser anterior a %s", string, DateUtil.formatDate(dataInicio)));
 		}
 		
 	}

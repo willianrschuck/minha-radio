@@ -10,7 +10,7 @@ public class DateUtil {
 	private DateUtil() {
 	}
 	
-	private static final DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
+	static final DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
 
 	public static Date asDate(String s) {
 		try {
