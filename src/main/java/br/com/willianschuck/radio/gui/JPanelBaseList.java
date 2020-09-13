@@ -1,21 +1,24 @@
 package br.com.willianschuck.radio.gui;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-import br.com.willianschuck.radio.control.Actions;
-import br.com.willianschuck.radio.control.Controller;
+import br.com.willianschuck.base.CrudService;
+import br.com.willianschuck.radio.Controller;
 import br.com.willianschuck.radio.model.Entidade;
-import br.com.willianschuck.radio.service.Service;
 
 public abstract class JPanelBaseList<T extends Entidade> extends JPanelBase {
 	private static final long serialVersionUID = 1L;
@@ -31,9 +34,11 @@ public abstract class JPanelBaseList<T extends Entidade> extends JPanelBase {
 	
 	private T itemSelecionado;
 
-	private Service<T> service;
+	private CrudService<T> service;
 
-	public JPanelBaseList(Controller controller, String cardName, Service<T> service) {
+	private JButton btnNovo;
+
+	public JPanelBaseList(Controller controller, String cardName, CrudService<T> service) {
 		super(controller, cardName);
 		this.service = service;
 		this.initComponents();
@@ -43,6 +48,16 @@ public abstract class JPanelBaseList<T extends Entidade> extends JPanelBase {
 	
 	protected abstract List<Object[]> getData();
 	
+	private class ForcedListSelectionModel extends DefaultListSelectionModel {
+		private static final long serialVersionUID = 1L;
+
+		public ForcedListSelectionModel () {
+	        setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	    }
+
+	    
+	}
+	
 	@Override
 	protected void initComponents() {
 		super.initComponents();
@@ -50,10 +65,17 @@ public abstract class JPanelBaseList<T extends Entidade> extends JPanelBase {
 		tableModel = getDefaultTableModel();
 		table = new JTable(tableModel);
 		scrPaneTable = new JScrollPane(table);
+		scrPaneTable.setBorder(BorderFactory.createEmptyBorder());
 		
 		addBotoesToolbar();
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setAutoCreateRowSorter(true);
+		table.getTableHeader().setOpaque(false);
+		
+		table.setSelectionModel(new ForcedListSelectionModel());
+		
+		table.getTableHeader().setBackground(Colors.getDarkBackgroundColor().brighter());
+		table.getTableHeader().setForeground(Color.WHITE);
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				
@@ -72,9 +94,15 @@ public abstract class JPanelBaseList<T extends Entidade> extends JPanelBase {
 	}
 
 	private void addBotoesToolbar() {
-
-		btnEditar = new JButton("Editar");
-		btnEditar.addActionListener(new ActionListener() {
+		
+		btnNovo = ComponentFactory.makeButton(Icons.getNewIcon(), new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO adicionar ação para criar novo item
+			}
+		});
+		addToolbarItem(btnNovo);
+		
+		btnEditar = ComponentFactory.makeButton(Icons.getEditIcon(), new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				actions.editar(getItemSelecionado());
 			}
@@ -82,8 +110,7 @@ public abstract class JPanelBaseList<T extends Entidade> extends JPanelBase {
 		btnEditar.setEnabled(false);
 		addToolbarItem(btnEditar);
 		
-		btnExcluir = new JButton("Excluir");
-		btnExcluir.addActionListener(new ActionListener() {
+		btnExcluir = ComponentFactory.makeButton(Icons.getDeleteIcon(), new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				remover();
 			}
@@ -116,8 +143,8 @@ public abstract class JPanelBaseList<T extends Entidade> extends JPanelBase {
 		getActions().editar(entidade);
 	}
 	
-	private T getEntityById(Integer id) {
-		return service.getBy(id);
+	private T getEntityById(Object id) {
+		return service.buscar(id);
 	}
 	
 	public void updateListData() {
@@ -141,7 +168,7 @@ public abstract class JPanelBaseList<T extends Entidade> extends JPanelBase {
 		this.actions = actions;
 	}
 	
-	public Service<T> getService() {
+	public CrudService<T> getService() {
 		return service;
 	}
 	

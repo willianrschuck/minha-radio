@@ -5,27 +5,28 @@ import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
-import br.com.willianschuck.radio.control.Controller;
+import br.com.willianschuck.base.AbstractCrudService;
+import br.com.willianschuck.radio.Controller;
 import br.com.willianschuck.radio.gui.JPanelBaseList;
+import br.com.willianschuck.radio.gui.UneditableDefaultTableModel;
 import br.com.willianschuck.radio.model.Cliente;
 import br.com.willianschuck.radio.model.Endereco;
-import br.com.willianschuck.radio.service.ClienteService;
 
 public class JPanelClienteLista extends JPanelBaseList<Cliente> {
 	private static final long serialVersionUID = 1L;
-	private ClienteService clienteService;
+	private AbstractCrudService<Cliente> clienteService;
 	
-	public JPanelClienteLista(Controller controller) {
+	public JPanelClienteLista(Controller controller, AbstractCrudService<Cliente> clienteService) {
 		
-		super(controller, "cliente_lista", controller.getClienteService());
-		clienteService = controller.getClienteService();
+		super(controller, "cliente_lista", clienteService);
+		this.clienteService = clienteService;
 		initComponents();
 		
 	}
 	
 	@Override
 	protected DefaultTableModel getDefaultTableModel() {
-		return new DefaultTableModel(new Object[] {"Cód.", "Nome", "Telefone", "E-mail", "Estado", "Cidade", "Logradouro", "Bairro", "Número"}, 0);
+		return new UneditableDefaultTableModel(new Object[] {"Cód.", "Nome", "Telefone", "E-mail", "Estado", "Cidade", "Logradouro", "Bairro", "Número"}, 0);
 	}
 	
 	@Override
@@ -34,10 +35,15 @@ public class JPanelClienteLista extends JPanelBaseList<Cliente> {
 		List<Object[]> data = new ArrayList<Object[]>();
 		for (Cliente cliente : clienteService.getAll()) {
 			Endereco endereco = cliente.getEndereco();
-			data.add(new Object[] {cliente.getId(), cliente.getNome(), cliente.getTelefone(), cliente.getEmail(), endereco.getCidade().getEstado().toString(), endereco.getCidade().toString(), endereco.getLogradouro(), endereco.getBairro(), endereco.getNumero()});
+			data.add(new Object[] {cliente.getId(), cliente.getNomeFantasia(), cliente.getTelefone(), cliente.getEmail(), endereco.getCidade().getEstado().toString(), endereco.getCidade().toString(), endereco.getLogradouro(), endereco.getBairro(), endereco.getNumero()});
 		}
 		return data;
 		
+	}
+	
+	@Override
+	protected String getScreenName() {
+		return "Lista de Clientes";
 	}
 
 }

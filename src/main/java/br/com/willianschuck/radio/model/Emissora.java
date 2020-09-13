@@ -18,7 +18,7 @@ import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "emissora")
-public class Emissora extends Entidade implements Serializable {
+public class Emissora extends Entidade {
 	private static final long serialVersionUID = 1L;
 
 	@Id

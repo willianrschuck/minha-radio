@@ -2,6 +2,7 @@ package br.com.willianschuck.radio.gui.form;
 
 import static br.com.willianschuck.util.PanelUtil.addToPanel;
 
+import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,11 +13,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import br.com.willianschuck.radio.control.Controller;
+import br.com.willianschuck.radio.endereco.EnderecoService;
 import br.com.willianschuck.radio.model.Cidade;
 import br.com.willianschuck.radio.model.Endereco;
 import br.com.willianschuck.radio.model.Estado;
@@ -38,17 +37,18 @@ public class JPanelEnderecoForm extends JPanel {
 	private JComboBox<Estado> cbxEstado;
 	private JComboBox<Cidade> cbxCidade;
 
-	private Controller controller;
-
-	public JPanelEnderecoForm(Controller controller) {
-		this.controller = controller;
+	private EnderecoService enderecoService;
+	
+	public JPanelEnderecoForm(EnderecoService enderecoService) {
+		this.enderecoService = enderecoService;
 		initComponents();
 	}
 	
 	private void initComponents() {
 		
 		setLayout(new GridBagLayout());
-		setBorder(new CompoundBorder(new TitledBorder("Endereço"), new EmptyBorder(0, 0, 0, 0)));
+		setBorder(new TitledBorder("Endereço"));
+		setBackground(Color.WHITE);
 		
 		lblLogradouro = new JLabel("Logradouro ", SwingConstants.RIGHT);
 		lblNumero = new JLabel("Numero ", SwingConstants.RIGHT);
@@ -129,7 +129,7 @@ public class JPanelEnderecoForm extends JPanel {
 		Estado padrao = new Estado();
 		padrao.setNome("Selecione...");
 		
-		List<Estado> estados = controller.getEstadoDao().getAll();
+		List<Estado> estados = enderecoService.getEstados();
 		
 		cbxEstado.addItem(padrao);
 		for (Estado estado : estados) {
@@ -152,7 +152,7 @@ public class JPanelEnderecoForm extends JPanel {
 		
 		if (estado != null && estado.getId() != null) {
 			
-			List<Cidade> cidades = controller.getCidadeDao().getFrom(estado);
+			List<Cidade> cidades = enderecoService.getCidadesFrom(estado);
 			for (Cidade cidade : cidades) {
 				cbxCidade.addItem(cidade);
 			}

@@ -1,7 +1,5 @@
 package br.com.willianschuck.radio.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "cidade")
-public class Cidade extends Entidade implements Serializable {
+public class Cidade extends Entidade {
 	private static final long serialVersionUID = 1L;
 
 	@Id

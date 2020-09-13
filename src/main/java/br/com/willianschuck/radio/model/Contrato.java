@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "contrato")
-public class Contrato extends Entidade implements Serializable{
+public class Contrato extends Entidade {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -47,6 +47,9 @@ public class Contrato extends Entidade implements Serializable{
 	
 	@Column(name = "precomensal", precision = 5, columnDefinition = "decimal(20,5)", nullable = false)
 	private Double precoMensal;
+	
+	@Column(name = "valortotal", precision = 5, columnDefinition = "decimal(20,5)")
+	private Double valorTotal;
 	
 	@Column(name = "discriminacao")
 	private String discriminacaoInsercoes;
@@ -102,9 +105,17 @@ public class Contrato extends Entidade implements Serializable{
 	public Double getPrecoMensal() {
 		return precoMensal;
 	}
-
+	
 	public void setPrecoMensal(Double precoMensal) {
 		this.precoMensal = precoMensal;
+	}
+	
+	public Double getValorTotal() {
+		return valorTotal;
+	}
+	
+	public void setValorTotal(Double valorTotal) {
+		this.valorTotal = valorTotal;
 	}
 
 	public String getDiscriminacaoInsercoes() {

@@ -3,26 +3,22 @@ package br.com.willianschuck.radio.gui.form;
 import static br.com.willianschuck.util.PanelUtil.addToPanel;
 
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import br.com.willianschuck.exception.InvalidValueException;
-import br.com.willianschuck.radio.control.Actions;
-import br.com.willianschuck.radio.control.Controller;
-import br.com.willianschuck.radio.gui.JPanelBase;
+import br.com.willianschuck.base.AbstractCrudService;
+import br.com.willianschuck.radio.Controller;
+import br.com.willianschuck.radio.endereco.EnderecoService;
+import br.com.willianschuck.radio.gui.JPanelBaseForm;
 import br.com.willianschuck.radio.model.Emissora;
+import br.com.willianschuck.util.Masks;
 
-public class JPanelEmissoraForm extends JPanelBase {
+public class JPanelEmissoraForm extends JPanelBaseForm<Emissora> {
 	private static final long serialVersionUID = 1L;
-	
-	private Emissora emissora;
 	
 	private JLabel lblNomeFantasia;
 	private JLabel lblRazaoSocial;
@@ -30,20 +26,17 @@ public class JPanelEmissoraForm extends JPanelBase {
 	
 	private JTextField txtNomeFantasia;
 	private JTextField txtRazaoSocial;
-	private JTextField txtCnpj;
+	private JFormattedTextField txtCnpj;
 	
 	private JPanel pnlForm;
-
-	private Actions<Emissora> actions;
-
 	private JPanel dadosEmissora;
-
 	private JPanelEnderecoForm enderecoForm;
 
-	private JButton btnSalvar;
+	private EnderecoService enderecoService;
 
-	public JPanelEmissoraForm(Controller controller) {
-		super(controller, "emissora_form");
+	public JPanelEmissoraForm(Controller controller, AbstractCrudService<Emissora> emissoraService, EnderecoService enderecoService) {
+		super(controller, "emissora_form", emissoraService);
+		this.enderecoService = enderecoService;
 		initComponents();
 	}
 	
@@ -55,11 +48,11 @@ public class JPanelEmissoraForm extends JPanelBase {
 		
 		lblNomeFantasia = new JLabel("Nome Fantasia ", SwingConstants.RIGHT);
 		lblRazaoSocial = new JLabel("Razão Social ", SwingConstants.RIGHT);
-		lblCnpj = new JLabel("Nome ", SwingConstants.RIGHT);
+		lblCnpj = new JLabel("CNPJ ", SwingConstants.RIGHT);
 		
 		txtNomeFantasia = new JTextField();
 		txtRazaoSocial = new JTextField();
-		txtCnpj = new JTextField();
+		txtCnpj = new JFormattedTextField(Masks.getMaskCnpj());
 		
 		dadosEmissora = new JPanel(new GridBagLayout());
 
@@ -70,45 +63,30 @@ public class JPanelEmissoraForm extends JPanelBase {
 		addToPanel(dadosEmissora, lblCnpj, 0, 2, 1);
 		addToPanel(dadosEmissora, txtCnpj, 1, 2, 1, 1, 0);
 
-		enderecoForm = new JPanelEnderecoForm(controller());
+		enderecoForm = new JPanelEnderecoForm(enderecoService);
 		
 		addToPanel(pnlForm, dadosEmissora, 0, 0, 1, 1, 0);
 		addToPanel(pnlForm, enderecoForm, 0, 1, 1, 1, 0);
 		addToPanel(pnlForm, new JLabel(), 0, 99, 12, 0, 1);
 		
-		btnSalvar = new JButton("Salvar");
-		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				salvar();
-			}
-		});
-		addToolbarItem(btnSalvar);
-		
 		setContent(pnlForm);
 		
 	}
-	
-	private void salvar() {
+
+	@Override
+	protected Emissora montarObjeto(Emissora emissora) {
 		
-		preencherObjeto();
+		emissora.setNomeFantasia(txtNomeFantasia.getText());
+		emissora.setRazaoSocial(txtRazaoSocial.getText());
+		emissora.setCnpj(txtCnpj.getText());
+		emissora.setEndereco(enderecoForm.getEndereco());
 		
-		try {
-			controller().getEmissoraService().validar(emissora);
-			controller().getEmissoraService().cadastrar(emissora);
-			actions.listar();
-		} catch (InvalidValueException e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(this, e.getMessage(), "Erro durante o cadastro", JOptionPane.ERROR_MESSAGE);
-		}
+		return emissora;
 		
 	}
 
-	public void editar(Emissora emissora) {
-		this.emissora = emissora;
-		preencherCampos();
-	}
-
-	private void preencherCampos() {
+	@Override
+	protected void preencherFormulario(Emissora emissora) {
 		
 		txtNomeFantasia.setText(emissora.getNomeFantasia());
 		txtRazaoSocial.setText(emissora.getRazaoSocial());
@@ -117,17 +95,9 @@ public class JPanelEmissoraForm extends JPanelBase {
 		
 	}
 	
-	private void preencherObjeto() {
-		
-		emissora.setNomeFantasia(txtNomeFantasia.getText());
-		emissora.setRazaoSocial(txtRazaoSocial.getText());
-		emissora.setCnpj(txtCnpj.getText());
-		emissora.setEndereco(enderecoForm.getEndereco());
-		
-	}
-
-	public void setEmissoraActions(Actions<Emissora> actions) {
-		this.actions = actions;
+	@Override
+	protected String getScreenName() {
+		return "Cadastro de Emissora";
 	}
 	
 }

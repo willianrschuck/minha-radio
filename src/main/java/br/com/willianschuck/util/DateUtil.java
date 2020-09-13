@@ -32,4 +32,8 @@ public class DateUtil {
 		return a.before(b);
 	}
 	
+	public static DateFormat getDateFormat() {
+		return date;
+	}
+	
 }

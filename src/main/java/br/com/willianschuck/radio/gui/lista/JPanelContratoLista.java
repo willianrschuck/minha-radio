@@ -13,28 +13,33 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
-import br.com.willianschuck.radio.control.Controller;
+import br.com.willianschuck.base.AbstractCrudService;
+import br.com.willianschuck.base.ReportService;
+import br.com.willianschuck.radio.Controller;
+import br.com.willianschuck.radio.gui.ComponentFactory;
+import br.com.willianschuck.radio.gui.Icons;
 import br.com.willianschuck.radio.gui.JPanelBaseList;
 import br.com.willianschuck.radio.model.Contrato;
-import br.com.willianschuck.radio.report.ContratoReport;
-import br.com.willianschuck.radio.service.ContratoService;
-import br.com.willianschuck.radio.to.ContratoTO;
 
 public class JPanelContratoLista extends JPanelBaseList<Contrato> {
 	private static final long serialVersionUID = 1L;
 	
-	private ContratoService contratoService;
+	private AbstractCrudService<Contrato> contratoService;
+	private ReportService<Contrato> contratoReportService;
 	
 	private JButton btnImprimir;
 	
-	public JPanelContratoLista(Controller controller) {
+	public JPanelContratoLista(Controller controller, AbstractCrudService<Contrato> contratoService, 
+			ReportService<Contrato> contratoReportService) {
 		
-		super(controller, "contrato_lista", controller.getContratoService());
-		contratoService = controller.getContratoService();
+		super(controller, "contrato_lista", contratoService);
+		
+		this.contratoService = contratoService;
+		this.contratoReportService = contratoReportService;
 		
 		initComponents();
 		
-		btnImprimir = new JButton("Imprimir");
+		btnImprimir = ComponentFactory.makeButton("Gerar PDF", Icons.getPdfIcon());
 		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				imprimirContratoSelecionado();
@@ -46,14 +51,13 @@ public class JPanelContratoLista extends JPanelBaseList<Contrato> {
 	}
 
 	private void imprimirContratoSelecionado() {
-		
-		ContratoTO contratoTO = contratoService.generateContratoTO(getItemSelecionado());
-		ContratoReport contratoReport = new ContratoReport();
-		
-		byte[] bytea = contratoReport.generate(contratoTO);
+		showSaveFileScreen(contratoReportService.makeReport(getItemSelecionado()));
+	}
+	
+	private void showSaveFileScreen(byte[] data) {
 		
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Specify a file to save");
+		fileChooser.setDialogTitle("Salvar");
 		fileChooser.setFileFilter(new FileNameExtensionFilter("Documentos PDF", "pdf"));
 		int userSelection = fileChooser.showSaveDialog(this);
 		if (userSelection == JFileChooser.APPROVE_OPTION) {
@@ -62,19 +66,18 @@ public class JPanelContratoLista extends JPanelBaseList<Contrato> {
 			FileOutputStream os;
 			try {
 				os = new FileOutputStream(fileToSave);
-				os.write(bytea);
+				os.write(data);
 				os.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		
-		
 	}
 	
 	@Override
 	protected DefaultTableModel getDefaultTableModel() {
-		return new DefaultTableModel(new Object[] {"Cód.", "Cliente", "Início", "Término", "Valor Mensal"}, 0);
+		return new DefaultTableModel(new Object[] {"Cód.", "Cliente", "Início", "Término", "Valor Mensal", "Valor Total"}, 0);
 	}
 	
 	@Override
@@ -82,7 +85,7 @@ public class JPanelContratoLista extends JPanelBaseList<Contrato> {
 		
 		List<Object[]> data = new ArrayList<Object[]>();
 		for (Contrato contrato : contratoService.getAll()) {
-			data.add(new Object[] {contrato.getId(), contrato.getCliente().getNome(), contrato.getDataInicio(), contrato.getDataFinal(), contrato.getPrecoMensal()});
+			data.add(new Object[] {contrato.getId(), contrato.getCliente().getNomeFantasia(), contrato.getDataInicio(), contrato.getDataFinal(), contrato.getPrecoMensal(), contrato.getValorTotal()});
 		}
 		return data;
 		
@@ -93,6 +96,11 @@ public class JPanelContratoLista extends JPanelBaseList<Contrato> {
 		super.updateToolbarButtons();
 		boolean hasItemSelecionado = hasItemSelecionado();
 		btnImprimir.setEnabled(hasItemSelecionado);
+	}
+	
+	@Override
+	protected String getScreenName() {
+		return "Lista de Contratos";
 	}
 
 }

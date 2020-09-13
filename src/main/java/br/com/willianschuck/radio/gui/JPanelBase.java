@@ -1,13 +1,17 @@
 package br.com.willianschuck.radio.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.border.EmptyBorder;
 
-import br.com.willianschuck.radio.control.Controller;
+import br.com.willianschuck.radio.Controller;
 
 public abstract class JPanelBase extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -15,9 +19,12 @@ public abstract class JPanelBase extends JPanel {
 	private Controller controller;
 	
 	private JToolBar toolBar;
+	private JPanel pnlTopo;
 	private JComponent content;
 	
 	private String cardName;
+
+	private JLabel lblScreenName;
 	
 	public JPanelBase(Controller controller, String cardName) {
 		this.controller = controller;
@@ -28,10 +35,22 @@ public abstract class JPanelBase extends JPanel {
 		
 		setLayout(new BorderLayout());
 		
+		pnlTopo = new JPanel(new BorderLayout());
+		pnlTopo.setBackground(Colors.getDarkBackgroundColor());
+		
 		toolBar = new JToolBar();
 		toolBar.setFloatable(false);
+		toolBar.setOpaque(false);
 		
-		add(toolBar, BorderLayout.NORTH);
+		lblScreenName = new JLabel(getScreenName());
+		lblScreenName.setFont(new Font("Arial", Font.BOLD, 16));
+		lblScreenName.setHorizontalAlignment(JLabel.RIGHT);
+		lblScreenName.setForeground(Color.WHITE);
+		lblScreenName.setBorder(new EmptyBorder(5, 0, 0, 10));
+		
+		pnlTopo.add(lblScreenName, BorderLayout.NORTH);
+		pnlTopo.add(toolBar, BorderLayout.CENTER);
+		add(pnlTopo, BorderLayout.NORTH);
 		
 	}
 
@@ -62,5 +81,7 @@ public abstract class JPanelBase extends JPanel {
 	public String getCardName() {
 		return cardName;
 	}
+	
+	protected abstract String getScreenName();
 	
 }

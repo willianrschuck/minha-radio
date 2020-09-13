@@ -1,5 +1,6 @@
 package br.com.willianschuck.radio.gui;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 
 import javax.swing.JFrame;
@@ -13,18 +14,20 @@ public class JFramePrincipal extends JFrame {
 	
 	public JFramePrincipal() {
 		
+		setLayout(new BorderLayout());
+		
 		cardLayout = new CardLayout();
 		pnlCard = new JPanel();
 		pnlCard.setLayout(cardLayout);
 		
-		this.getContentPane().add(pnlCard);
+		this.add(pnlCard, BorderLayout.CENTER);
+		setBackground(Colors.getDarkBackgroundColor().brighter());
 		
 		this.setTitle("Rádio Coqueiros");
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
 	}
-	
 	
 	public void addCard(JPanel panel, String name) {
 		pnlCard.add(panel, name);

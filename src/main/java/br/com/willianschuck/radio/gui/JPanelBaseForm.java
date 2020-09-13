@@ -6,10 +6,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-import br.com.willianschuck.radio.control.Actions;
-import br.com.willianschuck.radio.control.Controller;
+import br.com.willianschuck.base.AbstractCrudService;
+import br.com.willianschuck.base.Validator;
+import br.com.willianschuck.radio.Controller;
 import br.com.willianschuck.radio.model.Entidade;
-import br.com.willianschuck.radio.service.Service;
 
 public abstract class JPanelBaseForm<T extends Entidade> extends JPanelBase {
 	private static final long serialVersionUID = 1L;
@@ -18,11 +18,12 @@ public abstract class JPanelBaseForm<T extends Entidade> extends JPanelBase {
 	
 	private Actions<T> actions;
 	
-	private Service<T> service;
+	private AbstractCrudService<T> service;
+	private Validator<T> validator;
 
 	private JButton btnSalvar;
 
-	public JPanelBaseForm(Controller controller, String cardName, Service<T> service) {
+	public JPanelBaseForm(Controller controller, String cardName, AbstractCrudService<T> service) {
 		super(controller, cardName);
 		this.service = service;
 	}
@@ -30,8 +31,8 @@ public abstract class JPanelBaseForm<T extends Entidade> extends JPanelBase {
 	@Override
 	protected void initComponents() {
 		super.initComponents();
-
-		btnSalvar = new JButton("Salvar");
+		
+		btnSalvar = ComponentFactory.makeButton(Icons.getSaveIcon());
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				salvar();
@@ -40,11 +41,15 @@ public abstract class JPanelBaseForm<T extends Entidade> extends JPanelBase {
 		addToolbarItem(btnSalvar);
 		
 	}
+	
 	protected abstract T montarObjeto(T item);
 	
 	protected abstract void preencherFormulario(T obj);
 	
 	public final T getItem() {
+		if (item == null) {
+			item = service.create();
+		}
 		item = montarObjeto(item);
 		return item;
 	}
@@ -52,7 +57,7 @@ public abstract class JPanelBaseForm<T extends Entidade> extends JPanelBase {
 	protected void salvar() {
 		try {
 			T i = getItem();
-			service.validar(i);
+			validator.validate(i);
 			service.cadastrar(i);
 			actions.listar();
 		} catch (Exception e) {
@@ -62,9 +67,12 @@ public abstract class JPanelBaseForm<T extends Entidade> extends JPanelBase {
 		
 	}
 	
-	public void editar(T obj) {
-		preencherFormulario(obj);
-		item = obj;
+	public void editar(T item) {
+		if (item == null) {
+			throw new RuntimeException("O item a ser editado não pode ser nulo.");
+		}
+		preencherFormulario(item);
+		this.item = item;
 		controller().viewCard(getCardName());
 	}
 	

@@ -5,20 +5,20 @@ import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
-import br.com.willianschuck.radio.control.Controller;
+import br.com.willianschuck.base.AbstractCrudService;
+import br.com.willianschuck.radio.Controller;
 import br.com.willianschuck.radio.gui.JPanelBaseList;
 import br.com.willianschuck.radio.model.Emissora;
 import br.com.willianschuck.radio.model.Endereco;
-import br.com.willianschuck.radio.service.EmissoraService;
 
 public class JPanelEmissoraLista extends JPanelBaseList<Emissora> {
 	private static final long serialVersionUID = 1L;
-	private EmissoraService emissoraService;
+	private AbstractCrudService<Emissora> emissoraService;
 	
-	public JPanelEmissoraLista(Controller controller) {
+	public JPanelEmissoraLista(Controller controller, AbstractCrudService<Emissora> emissoraService) {
 		
-		super(controller, "emissora_lista", controller.getEmissoraService());
-		emissoraService = controller.getEmissoraService();
+		super(controller, "emissora_lista", emissoraService);
+		this.emissoraService = emissoraService;
 		initComponents();
 		
 	}
@@ -38,6 +38,11 @@ public class JPanelEmissoraLista extends JPanelBaseList<Emissora> {
 		}
 		return data;
 		
+	}
+	
+	@Override
+	protected String getScreenName() {
+		return "Lista de Emissoras";
 	}
 
 }

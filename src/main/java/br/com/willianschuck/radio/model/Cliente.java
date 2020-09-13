@@ -1,11 +1,12 @@
 package br.com.willianschuck.radio.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,7 +20,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "cliente")
-public class Cliente extends Entidade implements Serializable {
+public class Cliente extends Entidade {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -28,8 +29,11 @@ public class Cliente extends Entidade implements Serializable {
 	@GeneratedValue(generator = "seq_cliente", strategy = GenerationType.SEQUENCE)
 	private Integer id;
 	
-	@Column(name = "nome", length = 60, nullable = false)
-	private String nome;
+	@Column(name = "razaosocial", length = 60)
+	private String razaoSocial;
+	
+	@Column(name = "nomefantasia", length = 60, nullable = false)
+	private String nomeFantasia;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "datacadastro", nullable = false)
@@ -44,6 +48,22 @@ public class Cliente extends Entidade implements Serializable {
 	
 	@Column(name = "email", length = 50)
 	private String email;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "tipoPessoa")
+	private TipoPessoa tipoPessoa;
+	
+	@Column(name = "cpf", length = 11)
+	private String cpf;
+	
+	@Column(name = "cnpj", length = 14)
+	private String cnpj;
+	
+	@Column(name = "inscricaoEstadual", length = 30)
+	private String inscricaoEstadual;
+	
+	@Column(name = "ramoAtividade")
+	private String ramoAtividade;
 
 	public Integer getId() {
 		return id;
@@ -53,14 +73,22 @@ public class Cliente extends Entidade implements Serializable {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getRazaoSocial() {
+		return razaoSocial;
 	}
-
-	public void setNome(String name) {
-		this.nome = name;
+	
+	public void setRazaoSocial(String razaoSocial) {
+		this.razaoSocial = razaoSocial;
 	}
-
+	
+	public String getNomeFantasia() {
+		return nomeFantasia;
+	}
+	
+	public void setNomeFantasia(String nomeFantasia) {
+		this.nomeFantasia = nomeFantasia;
+	}
+	
 	public Date getDataCadastro() {
 		return dataCadastro;
 	}
@@ -92,11 +120,51 @@ public class Cliente extends Entidade implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public TipoPessoa getTipoPessoa() {
+		return tipoPessoa;
+	}
+
+	public void setTipoPessoa(TipoPessoa tipoPessoa) {
+		this.tipoPessoa = tipoPessoa;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public String getCnpj() {
+		return cnpj;
+	}
+
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
+	}
+	
+	public String getInscricaoEstadual() {
+		return inscricaoEstadual;
+	}
+	
+	public void setInscricaoEstadual(String inscricaoEstadual) {
+		this.inscricaoEstadual = inscricaoEstadual;
+	}
+	
+	public String getRamoAtividade() {
+		return ramoAtividade;
+	}
+	
+	public void setRamoAtividade(String ramoAtividade) {
+		this.ramoAtividade = ramoAtividade;
+	}
 
 	@Override
 	public String toString() {
-		if (nome != null) {
-			return nome;
+		if (nomeFantasia != null) {
+			return nomeFantasia;
 		}
 		return super.toString();
 	}
