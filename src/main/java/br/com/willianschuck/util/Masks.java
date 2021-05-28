@@ -8,6 +8,7 @@ public final class Masks {
 
 	private static MaskFormatter maskCnpj;
 	private static MaskFormatter maskCpf;
+	private static MaskFormatter maskTelefone;
 	
 	private Masks() {
 	}
@@ -47,6 +48,21 @@ public final class Masks {
 			}
 		}
 		return maskCpf;
+	}
+
+	public static MaskFormatter getMaskTelefone() {
+		if (maskTelefone == null) {
+			try {
+				maskTelefone = new MaskFormatter("(##) # ####-####");
+				maskTelefone.setPlaceholderCharacter('_');
+				maskTelefone.setValueContainsLiteralCharacters(false);
+				maskTelefone.setCommitsOnValidEdit(false);
+			} catch (Exception e) {
+				e.printStackTrace();
+				maskTelefone = null;
+			}
+		}
+		return maskTelefone;
 	}
 	
 }

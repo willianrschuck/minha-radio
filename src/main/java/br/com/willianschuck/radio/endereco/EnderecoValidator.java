@@ -10,10 +10,10 @@ public class EnderecoValidator implements Validator<Endereco> {
 	public void validate(Endereco e) throws InvalidValueException {
 		
 		if (e == null) {
-			throw new InvalidValueException("O endereço é obrigatório");
+			throw new InvalidValueException("O endereÃ§o Ã© obrigatÃ³rio");
 		}
 		if (e.getCidade().getId() == null) {
-			throw new InvalidValueException("O campo cidade é orbrigatório.");
+			throw new InvalidValueException("O campo cidade Ã© orbrigatÃ³rio.");
 		}
 		
 		ValidatorUtil.validate(e.getLogradouro(), "logradouro", false, 60, 3);

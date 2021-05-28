@@ -27,6 +27,7 @@ import javax.swing.text.MaskFormatter;
 
 import br.com.willianschuck.base.AbstractCrudService;
 import br.com.willianschuck.radio.Controller;
+import br.com.willianschuck.radio.contrato.ContratoValidator;
 import br.com.willianschuck.radio.gui.JPanelBaseForm;
 import br.com.willianschuck.radio.gui.listeners.ChangedValueListener;
 import br.com.willianschuck.radio.model.Cliente;
@@ -64,7 +65,7 @@ public class JPanelContratoForm extends JPanelBaseForm<Contrato> {
 	
 	public JPanelContratoForm(Controller controller, AbstractCrudService<Contrato> contratoService, AbstractCrudService<Cliente> clienteService, AbstractCrudService<Emissora> emissoraService) {
 		
-		super(controller, "contrato_form", contratoService);
+		super(controller, "contrato_form", contratoService, new ContratoValidator());
 		this.clienteService = clienteService;
 		this.emissoraService = emissoraService;
 		initComponents();
@@ -89,10 +90,10 @@ public class JPanelContratoForm extends JPanelBaseForm<Contrato> {
 		lblEmissora = new JLabel("Emissora");
 		lblCliente = new JLabel("Cliente");
 		lblPrazo = new JLabel("Prazo");
-		lblDataInicio = new JLabel("Data de Início");
-		lblDataTermino = new JLabel("Data de Término");
-		lblPrecoMensal = new JLabel("Preço Mensal");
-		lblDiscriminacaoInsercoes = new JLabel("Discriminacao das Inserções");
+		lblDataInicio = new JLabel("Data de InÃ­cio");
+		lblDataTermino = new JLabel("Data de TÃ©rmino");
+		lblPrecoMensal = new JLabel("PreÃ§o Mensal");
+		lblDiscriminacaoInsercoes = new JLabel("DiscriminaÃ§Ã£o das InserÃ§Ãµes");
 		lblValorTotal = new JLabel("Valor Total");
 		
 		cbxEmissora = new JComboBox<Emissora>();

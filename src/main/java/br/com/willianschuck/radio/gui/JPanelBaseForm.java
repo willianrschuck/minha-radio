@@ -23,16 +23,17 @@ public abstract class JPanelBaseForm<T extends Entidade> extends JPanelBase {
 
 	private JButton btnSalvar;
 
-	public JPanelBaseForm(Controller controller, String cardName, AbstractCrudService<T> service) {
+	public JPanelBaseForm(Controller controller, String cardName, AbstractCrudService<T> service, Validator<T> validator) {
 		super(controller, cardName);
 		this.service = service;
+		this.validator = validator;
 	}
 	
 	@Override
 	protected void initComponents() {
 		super.initComponents();
 		
-		btnSalvar = ComponentFactory.makeButton(Icons.getSaveIcon());
+		btnSalvar = ComponentFactory.makeButton(Icons.Save);
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				salvar();
@@ -69,7 +70,7 @@ public abstract class JPanelBaseForm<T extends Entidade> extends JPanelBase {
 	
 	public void editar(T item) {
 		if (item == null) {
-			throw new RuntimeException("O item a ser editado n„o pode ser nulo.");
+			throw new RuntimeException("O item a ser editado n√£o pode ser nulo.");
 		}
 		preencherFormulario(item);
 		this.item = item;

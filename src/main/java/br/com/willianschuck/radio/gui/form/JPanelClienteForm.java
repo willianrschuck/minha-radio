@@ -19,10 +19,11 @@ import javax.swing.event.ChangeListener;
 
 import br.com.willianschuck.base.AbstractCrudService;
 import br.com.willianschuck.radio.Controller;
+import br.com.willianschuck.radio.cliente.ClienteValidator;
 import br.com.willianschuck.radio.endereco.EnderecoService;
 import br.com.willianschuck.radio.gui.JPanelBaseForm;
 import br.com.willianschuck.radio.model.Cliente;
-import br.com.willianschuck.radio.model.TipoPessoa;
+import br.com.willianschuck.radio.model.Cliente.TipoPessoa;
 import br.com.willianschuck.util.Masks;
 
 public class JPanelClienteForm extends JPanelBaseForm<Cliente> {
@@ -59,10 +60,15 @@ public class JPanelClienteForm extends JPanelBaseForm<Cliente> {
 	
 	public JPanelClienteForm(Controller controller, AbstractCrudService<Cliente> clienteService, EnderecoService enderecoService) {
 		
-		super(controller, "cliente_form", clienteService);
+		super(controller, "cliente_form", clienteService, new ClienteValidator());
 		this.enderecoService = enderecoService;
 		initComponents();
 		
+	}
+
+	@Override
+	public void editar(Cliente item) {
+		super.editar(item);
 	}
 
 	@Override
@@ -71,11 +77,10 @@ public class JPanelClienteForm extends JPanelBaseForm<Cliente> {
 		super.initComponents();
 		
 		pnlForm = new JPanel(new GridBagLayout());
-		pnlForm.setBackground(Color.WHITE);
 		
 		txtNome = new JTextField();
 		txtRazaoSocial = new JTextField();
-		txtTelefone = new JTextField();
+		txtTelefone = new JFormattedTextField(Masks.getMaskTelefone());
 		txtEmail = new JTextField();
 		txtCpf = new JFormattedTextField(Masks.getMaskCpf());
 		txtCpf.setFocusLostBehavior(JFormattedTextField.COMMIT);
@@ -83,8 +88,8 @@ public class JPanelClienteForm extends JPanelBaseForm<Cliente> {
 		txtRamoAtividade = new JTextField();
 		
 		buttonGroup = new ButtonGroup();
-		radFisica = new JRadioButton("FÌsica");
-		radJuridica = new JRadioButton("JurÌdica");
+		radFisica = new JRadioButton("F√≠sica");
+		radJuridica = new JRadioButton("Jur√≠dica");
 		
 		ChangeListener radioChangeListener = new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -100,7 +105,7 @@ public class JPanelClienteForm extends JPanelBaseForm<Cliente> {
 		buttonGroup.setSelected(getRadioModel(TipoPessoa.FISICA), true);
 		
 		lblNome = new JLabel("Nome ", SwingConstants.RIGHT);
-		lblRazaoSocial = new JLabel("Raz„o Social", SwingConstants.RIGHT);
+		lblRazaoSocial = new JLabel("Raz√£o Social", SwingConstants.RIGHT);
 		lblTelefone = new JLabel("Telefone ", SwingConstants.RIGHT);
 		lblEmail = new JLabel("E-mail ", SwingConstants.RIGHT);
 		lblTipo = new JLabel("Tipo ", SwingConstants.RIGHT);
@@ -109,7 +114,6 @@ public class JPanelClienteForm extends JPanelBaseForm<Cliente> {
 		lblRamoAtividade = new JLabel("Ramo de Atividade ", SwingConstants.RIGHT);
 		
 		infosPessoais = new JPanel(new GridBagLayout());
-		infosPessoais.setBackground(Color.WHITE);
 		
 		int linha = 0;
 		addToPanel(infosPessoais, lblNome, 0, linha, 3);
@@ -162,7 +166,7 @@ public class JPanelClienteForm extends JPanelBaseForm<Cliente> {
 	protected Cliente montarObjeto(Cliente cliente) {
 		
 		cliente.setNomeFantasia(txtNome.getText());
-		cliente.setTelefone(txtTelefone.getText());
+		cliente.setTelefone(txtTelefone.getText().replaceAll("\\D", ""));
 		cliente.setEmail(txtEmail.getText());
 		cliente.setTipoPessoa(getTipoPessoa());
 		cliente.setRamoAtividade(txtRamoAtividade.getText());
@@ -170,13 +174,13 @@ public class JPanelClienteForm extends JPanelBaseForm<Cliente> {
 		if (isPessoaFisica()) {
 		
 			cliente.setRazaoSocial("");
-			cliente.setCpf((String) txtCpf.getValue());
+			cliente.setCpf(txtCpf.getText().replaceAll("\\D", ""));
 			cliente.setCnpj(null);
 			
 		} else {
 
 			cliente.setRazaoSocial(txtRazaoSocial.getText());
-			cliente.setCnpj((String) txtCnpj.getValue());
+			cliente.setCnpj(txtCnpj.getText());
 			cliente.setCpf(null);
 			
 		}

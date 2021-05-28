@@ -1,4 +1,4 @@
-package br.com.willianschuck.radio.conta;
+package br.com.willianschuck.radio.financeiro;
 
 import java.util.List;
 

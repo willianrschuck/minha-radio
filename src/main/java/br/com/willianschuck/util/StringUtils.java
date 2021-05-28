@@ -14,7 +14,7 @@ public class StringUtils {
 	}
 	
 	public static boolean isBlank(String s) {
-		return isNull(s) || s.isBlank(); 
+		return isNull(s) || isEmpty(s);
 	}
 	
 	public static boolean isNotBlank(String s) {

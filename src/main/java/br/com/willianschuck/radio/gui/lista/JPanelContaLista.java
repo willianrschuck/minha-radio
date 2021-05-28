@@ -7,7 +7,7 @@ import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 
 import br.com.willianschuck.radio.Controller;
-import br.com.willianschuck.radio.conta.ContaService;
+import br.com.willianschuck.radio.financeiro.ContaService;
 import br.com.willianschuck.radio.gui.JPanelBaseList;
 import br.com.willianschuck.radio.model.Conta;
 
@@ -25,10 +25,15 @@ public class JPanelContaLista extends JPanelBaseList<Conta> {
 		initComponents();
 		
 	}
+	
+	@Override
+	protected Conta novoObjeto() {
+		return null;
+	}
 
 	@Override
 	protected DefaultTableModel getDefaultTableModel() {
-		return new DefaultTableModel(new Object[] {"Cód.", "Valor", "Valor Pago", "Status"}, 0);
+		return new DefaultTableModel(new Object[] {"CÃ³d.", "Valor", "Valor Pago", "Status"}, 0);
 	}
 	
 	@Override

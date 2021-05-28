@@ -1,4 +1,4 @@
-package br.com.willianschuck.radio.conta;
+package br.com.willianschuck.radio.financeiro;
 
 import br.com.willianschuck.base.AbstractCrudService;
 import br.com.willianschuck.radio.model.Conta;

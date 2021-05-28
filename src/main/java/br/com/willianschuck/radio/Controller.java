@@ -9,17 +9,14 @@ import javax.swing.JFrame;
 
 import br.com.willianschuck.base.ReportService;
 import br.com.willianschuck.radio.cliente.ClienteServiceImpl;
-import br.com.willianschuck.radio.conta.ContaService;
-import br.com.willianschuck.radio.conta.ContaServiceImpl;
 import br.com.willianschuck.radio.contrato.ContratoReportServiceImpl;
 import br.com.willianschuck.radio.contrato.ContratoServiceImpl;
 import br.com.willianschuck.radio.emissora.EmissoraServiceImpl;
 import br.com.willianschuck.radio.endereco.EnderecoService;
 import br.com.willianschuck.radio.endereco.EnderecoServiceImpl;
-import br.com.willianschuck.radio.gui.Actions;
-import br.com.willianschuck.radio.gui.ComponentFactory;
-import br.com.willianschuck.radio.gui.JFramePrincipal;
-import br.com.willianschuck.radio.gui.JPanelMenuLateral;
+import br.com.willianschuck.radio.financeiro.ContaService;
+import br.com.willianschuck.radio.financeiro.ContaServiceImpl;
+import br.com.willianschuck.radio.gui.*;
 import br.com.willianschuck.radio.gui.form.JPanelClienteForm;
 import br.com.willianschuck.radio.gui.form.JPanelContratoForm;
 import br.com.willianschuck.radio.gui.lista.JPanelClienteLista;
@@ -42,8 +39,6 @@ public class Controller {
 
 	private JPanelClienteForm pClienteForm;
 	private JPanelClienteLista pClienteLista;
-//	private JPanelEmissoraForm pEmissoraForm;
-//	private JPanelEmissoraLista pEmissoraList;
 	private JPanelContratoForm pContratoForm;
 
 	private JPanelContratoLista pContratoList;
@@ -64,7 +59,7 @@ public class Controller {
 		mainFrame.setLocationRelativeTo(null);
 		
 		
-		// --- Painéis Cliente
+		// --- Painï¿½is Cliente
 		
 		pClienteForm = new JPanelClienteForm(this, clienteService, enderecoService);
 		pClienteLista = new JPanelClienteLista(this, clienteService);
@@ -90,7 +85,7 @@ public class Controller {
 		mainFrame.addCard(pClienteLista, pClienteLista.getCardName());
 	
 		
-		// --- Painéis Emissora
+		// --- Painï¿½is Emissora
 //		
 //		pEmissoraForm = new JPanelEmissoraForm(this, emissoraService, enderecoService);
 //		pEmissoraList = new JPanelEmissoraLista(this, emissoraService);
@@ -113,9 +108,7 @@ public class Controller {
 //		mainFrame.addCard(pEmissoraForm, pEmissoraForm.getCardName());
 //		mainFrame.addCard(pEmissoraList);
 		
-		
-		// ----- Painéis Contrato
-		
+
 		pContratoForm = new JPanelContratoForm(this, contratoService, clienteService, emissoraService);
 		pContratoList = new JPanelContratoLista(this, contratoService, contratoReportService);
 		Actions<Contrato> contratoActions = new Actions<Contrato>() {
@@ -135,61 +128,35 @@ public class Controller {
 		mainFrame.addCard(pContratoForm);
 		mainFrame.addCard(pContratoList);
 		
-		
 		JPanelMenuLateral sidebar = new JPanelMenuLateral(this);
-		JButton clientes = ComponentFactory.makeSidebarButton("Cliente");
-		clientes.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				clienteActions.listar();
-			}
-		});
-		JButton anuncios = ComponentFactory.makeSidebarButton("Anúncios");
-		anuncios.setEnabled(false);
-		JButton contratos = ComponentFactory.makeSidebarButton("Contratos");
-		contratos.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				contratoActions.listar();
-			}
-		});
-		
-		
+		JButton clientes = ComponentFactory.makeButton(Icons.People);
+		clientes.addActionListener(e -> clienteActions.listar());
+
 		pContasList = new JPanelContaLista(this, contaService );
 		Actions<Conta> contasAction = new Actions<Conta>() {
-			
+
 			public void editar(Conta c) {
 			}
-			
+
 			public void listar() {
 				pContasList.updateListData();
 				viewCard(pContasList.getCardName());
 			}
-			
+
 		};
 		pContasList.setActions(contasAction);
 		mainFrame.addCard(pContasList);
-		
-		JButton contas = ComponentFactory.makeSidebarButton("Contabilidade");
-		contas.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				contasAction.listar();			
-			}
-		});
-//		contas.setEnabled(false);
+
 		sidebar.addButton(clientes);
-		sidebar.addButton(anuncios);
-		sidebar.addButton(contratos);
-		sidebar.addButton(contas);
+//		sidebar.addButton(anuncios);
+//		sidebar.addButton(contratos);
 		mainFrame.add(sidebar, BorderLayout.WEST);
 		
 		mainFrame.setExtendedState(JFrame.NORMAL); 
 		mainFrame.setVisible(true);
 		
 	}
-	
+
 	public void viewCard(String card) {
 		mainFrame.viewCard(card);
 	}

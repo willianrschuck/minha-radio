@@ -24,8 +24,13 @@ public class JPanelEmissoraLista extends JPanelBaseList<Emissora> {
 	}
 	
 	@Override
+	protected Emissora novoObjeto() {
+		return emissoraService.create();
+	}
+	
+	@Override
 	protected DefaultTableModel getDefaultTableModel() {
-		return new DefaultTableModel(new Object[] {"Cód.", "Nome Fantasia", "Razão Social", "CNPJ", "Estado", "Cidade", "Logradouro", "Bairro", "Número"}, 0);
+		return new DefaultTableModel(new Object[] {"CÃ³d.", "Nome Fantasia", "RazÃ£o Social", "CNPJ", "Estado", "Cidade", "Logradouro", "Bairro", "NÃºmero"}, 0);
 	}
 	
 	@Override

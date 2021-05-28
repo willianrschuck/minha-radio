@@ -1,13 +1,12 @@
 package br.com.willianschuck.radio;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+
 public class Main {
 	
-	private Main() {
-		new Controller();
-	}
-
 	public static void main(String[] args) {
-		new Main();
+		FlatDarkLaf.setup();
+		new Controller();
 	}
 
 }

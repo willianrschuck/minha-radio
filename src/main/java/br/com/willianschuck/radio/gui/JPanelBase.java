@@ -36,17 +36,11 @@ public abstract class JPanelBase extends JPanel {
 		setLayout(new BorderLayout());
 		
 		pnlTopo = new JPanel(new BorderLayout());
-		pnlTopo.setBackground(Colors.getDarkBackgroundColor());
 		
 		toolBar = new JToolBar();
 		toolBar.setFloatable(false);
-		toolBar.setOpaque(false);
 		
 		lblScreenName = new JLabel(getScreenName());
-		lblScreenName.setFont(new Font("Arial", Font.BOLD, 16));
-		lblScreenName.setHorizontalAlignment(JLabel.RIGHT);
-		lblScreenName.setForeground(Color.WHITE);
-		lblScreenName.setBorder(new EmptyBorder(5, 0, 0, 10));
 		
 		pnlTopo.add(lblScreenName, BorderLayout.NORTH);
 		pnlTopo.add(toolBar, BorderLayout.CENTER);

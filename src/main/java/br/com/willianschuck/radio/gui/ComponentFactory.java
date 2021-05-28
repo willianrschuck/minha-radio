@@ -29,8 +29,6 @@ public class ComponentFactory {
 	
 	public static JButton makeSidebarButton(String text) {
 		JButton btn = makeButton(text);
-		btn.setFont(new Font("Arial", Font.PLAIN, 16));
-		btn.setBorder(sidebarBorder);
 		return btn;
 	}
 	
@@ -69,49 +67,7 @@ public class ComponentFactory {
 	
 	public static JButton makeButton() {
 		
-		JButton btn = new JButton();
-		
-		btn.setBackground(Colors.getDarkBackgroundColor());
-		btn.setForeground(Color.WHITE);
-		btn.setOpaque(true);
-		btn.setFocusPainted(false);
-		btn.setBorder(border);
-		btn.setBorderPainted(false);
-		btn.setHorizontalAlignment(JButton.LEFT);
-		btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btn.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				if (btn.isEnabled()) {
-					btn.setBackground(Colors.getDarkBackgroundColor().brighter());
-				}
-			}
-			
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent evt) {
-				if (btn.isEnabled()) {
-					btn.setBackground(Colors.getDarkBackgroundColor());
-				}
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				if (btn.isEnabled()) {
-					btn.setBackground(Colors.getDarkBackgroundColor().brighter().brighter());
-				}
-			}
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				if (btn.isEnabled()) {
-					btn.setBackground(Colors.getDarkBackgroundColor().brighter());
-				}
-			}
-			
-		});
-		
-		return btn;
+		return new JButton();
 		
 	}
 	

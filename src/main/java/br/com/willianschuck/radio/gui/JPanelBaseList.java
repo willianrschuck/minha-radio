@@ -47,8 +47,8 @@ public abstract class JPanelBaseList<T extends Entidade> extends JPanelBase {
 	protected abstract DefaultTableModel getDefaultTableModel();
 	
 	protected abstract List<Object[]> getData();
-	
-	private class ForcedListSelectionModel extends DefaultListSelectionModel {
+
+	private static class ForcedListSelectionModel extends DefaultListSelectionModel {
 		private static final long serialVersionUID = 1L;
 
 		public ForcedListSelectionModel () {
@@ -64,6 +64,7 @@ public abstract class JPanelBaseList<T extends Entidade> extends JPanelBase {
 		
 		tableModel = getDefaultTableModel();
 		table = new JTable(tableModel);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		scrPaneTable = new JScrollPane(table);
 		scrPaneTable.setBorder(BorderFactory.createEmptyBorder());
 		
@@ -74,19 +75,16 @@ public abstract class JPanelBaseList<T extends Entidade> extends JPanelBase {
 		
 		table.setSelectionModel(new ForcedListSelectionModel());
 		
-		table.getTableHeader().setBackground(Colors.getDarkBackgroundColor().brighter());
-		table.getTableHeader().setForeground(Color.WHITE);
-		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-				
-				int selectedRowIndex = table.getSelectedRow();
-				itemSelecionado = null;
-				if (selectedRowIndex > -1) {
-					Integer id = (Integer) table.getValueAt(table.getSelectedRow(), 0);
-					itemSelecionado = getEntityById(id);
-				}
-				updateToolbarButtons();
+		table.getSelectionModel().addListSelectionListener(e -> {
+
+			int selectedRowIndex = table.getSelectedRow();
+			itemSelecionado = null;
+			if (selectedRowIndex > -1) {
+				Integer id = (Integer) table.getValueAt(table.getSelectedRow(), 0);
+				itemSelecionado = getEntityById(id);
 			}
+			updateToolbarButtons();
+
 		});
 		
 		add(scrPaneTable);
@@ -95,30 +93,20 @@ public abstract class JPanelBaseList<T extends Entidade> extends JPanelBase {
 
 	private void addBotoesToolbar() {
 		
-		btnNovo = ComponentFactory.makeButton(Icons.getNewIcon(), new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// TODO adicionar ação para criar novo item
-			}
-		});
+		btnNovo = ComponentFactory.makeButton(Icons.New, e -> actions.editar( novoObjeto() ));
 		addToolbarItem(btnNovo);
 		
-		btnEditar = ComponentFactory.makeButton(Icons.getEditIcon(), new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				actions.editar(getItemSelecionado());
-			}
-		});
+		btnEditar = ComponentFactory.makeButton(Icons.Edit, e -> actions.editar( getItemSelecionado() ));
 		btnEditar.setEnabled(false);
 		addToolbarItem(btnEditar);
 		
-		btnExcluir = ComponentFactory.makeButton(Icons.getDeleteIcon(), new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				remover();
-			}
-		});
+		btnExcluir = ComponentFactory.makeButton(Icons.Delete, e -> remover());
 		btnExcluir.setEnabled(false);
 		addToolbarItem(btnExcluir);
 		
 	}
+
+	protected abstract T novoObjeto();
 
 	protected void remover() {
 		try {
@@ -133,16 +121,11 @@ public abstract class JPanelBaseList<T extends Entidade> extends JPanelBase {
 	protected void updateToolbarButtons() {
 		
 		boolean hasItemSelecionado = hasItemSelecionado();
-		
 		btnEditar.setEnabled(hasItemSelecionado);
 		btnExcluir.setEnabled(hasItemSelecionado);
 		
 	}
 
-	public void editar(T entidade) {
-		getActions().editar(entidade);
-	}
-	
 	private T getEntityById(Object id) {
 		return service.buscar(id);
 	}
@@ -159,19 +142,11 @@ public abstract class JPanelBaseList<T extends Entidade> extends JPanelBase {
 	public boolean hasItemSelecionado() {
 		return itemSelecionado != null;
 	}
-	
-	public Actions<T> getActions() {
-		return actions;
-	}
 
 	public void setActions(Actions<T> actions) {
 		this.actions = actions;
 	}
-	
-	public CrudService<T> getService() {
-		return service;
-	}
-	
+
 	public T getItemSelecionado() {
 		return itemSelecionado;
 	}

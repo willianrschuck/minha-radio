@@ -1,24 +1,16 @@
 package br.com.willianschuck.radio.gui.form;
 
-import static br.com.willianschuck.util.PanelUtil.addToPanel;
-
-import java.awt.Color;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
-
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.border.TitledBorder;
-
 import br.com.willianschuck.radio.endereco.EnderecoService;
 import br.com.willianschuck.radio.model.Cidade;
 import br.com.willianschuck.radio.model.Endereco;
 import br.com.willianschuck.radio.model.Estado;
+
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.util.List;
+
+import static br.com.willianschuck.util.PanelUtil.addToPanel;
 
 public class JPanelEnderecoForm extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -37,7 +29,7 @@ public class JPanelEnderecoForm extends JPanel {
 	private JComboBox<Estado> cbxEstado;
 	private JComboBox<Cidade> cbxCidade;
 
-	private EnderecoService enderecoService;
+	private final EnderecoService enderecoService;
 	
 	public JPanelEnderecoForm(EnderecoService enderecoService) {
 		this.enderecoService = enderecoService;
@@ -47,8 +39,7 @@ public class JPanelEnderecoForm extends JPanel {
 	private void initComponents() {
 		
 		setLayout(new GridBagLayout());
-		setBorder(new TitledBorder("Endereço"));
-		setBackground(Color.WHITE);
+		setBorder(new TitledBorder("EndereÃ§o"));
 		
 		lblLogradouro = new JLabel("Logradouro ", SwingConstants.RIGHT);
 		lblNumero = new JLabel("Numero ", SwingConstants.RIGHT);
@@ -59,14 +50,10 @@ public class JPanelEnderecoForm extends JPanel {
 		txtLogradouro = new JTextField();
 		txtNumero = new JTextField();
 		txtBairro = new JTextField();
-		cbxEstado = new JComboBox<Estado>();
-		cbxCidade = new JComboBox<Cidade>();
+		cbxEstado = new JComboBox<>();
+		cbxCidade = new JComboBox<>();
 		
-		cbxEstado.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				popularCbxCidade();
-			}
-		});
+		cbxEstado.addActionListener(e -> popularCbxCidade());
 		cbxCidade.setEnabled(false);
 		
 		popularCbxEstado();

@@ -12,6 +12,7 @@ import javax.swing.SwingConstants;
 
 import br.com.willianschuck.base.AbstractCrudService;
 import br.com.willianschuck.radio.Controller;
+import br.com.willianschuck.radio.emissora.EmissoraValidator;
 import br.com.willianschuck.radio.endereco.EnderecoService;
 import br.com.willianschuck.radio.gui.JPanelBaseForm;
 import br.com.willianschuck.radio.model.Emissora;
@@ -35,7 +36,7 @@ public class JPanelEmissoraForm extends JPanelBaseForm<Emissora> {
 	private EnderecoService enderecoService;
 
 	public JPanelEmissoraForm(Controller controller, AbstractCrudService<Emissora> emissoraService, EnderecoService enderecoService) {
-		super(controller, "emissora_form", emissoraService);
+		super(controller, "emissora_form", emissoraService, new EmissoraValidator());
 		this.enderecoService = enderecoService;
 		initComponents();
 	}
@@ -47,7 +48,7 @@ public class JPanelEmissoraForm extends JPanelBaseForm<Emissora> {
 		pnlForm = new JPanel(new GridBagLayout());
 		
 		lblNomeFantasia = new JLabel("Nome Fantasia ", SwingConstants.RIGHT);
-		lblRazaoSocial = new JLabel("Raz„o Social ", SwingConstants.RIGHT);
+		lblRazaoSocial = new JLabel("Raz√£o Social ", SwingConstants.RIGHT);
 		lblCnpj = new JLabel("CNPJ ", SwingConstants.RIGHT);
 		
 		txtNomeFantasia = new JTextField();

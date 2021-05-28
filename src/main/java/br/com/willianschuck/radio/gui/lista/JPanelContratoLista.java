@@ -39,7 +39,7 @@ public class JPanelContratoLista extends JPanelBaseList<Contrato> {
 		
 		initComponents();
 		
-		btnImprimir = ComponentFactory.makeButton("Gerar PDF", Icons.getPdfIcon());
+		btnImprimir = ComponentFactory.makeButton("Gerar PDF", Icons.Pdf);
 		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				imprimirContratoSelecionado();
@@ -48,6 +48,11 @@ public class JPanelContratoLista extends JPanelBaseList<Contrato> {
 		btnImprimir.setEnabled(false);
 		addToolbarItem(btnImprimir);
 		
+	}
+	
+	@Override
+	protected Contrato novoObjeto() {
+		return contratoService.create();
 	}
 
 	private void imprimirContratoSelecionado() {
@@ -77,7 +82,7 @@ public class JPanelContratoLista extends JPanelBaseList<Contrato> {
 	
 	@Override
 	protected DefaultTableModel getDefaultTableModel() {
-		return new DefaultTableModel(new Object[] {"Cód.", "Cliente", "Início", "Término", "Valor Mensal", "Valor Total"}, 0);
+		return new DefaultTableModel(new Object[] {"CÃ³d.", "Cliente", "InÃ­cio", "TÃ©rmino", "Valor Mensal", "Valor Total"}, 0);
 	}
 	
 	@Override

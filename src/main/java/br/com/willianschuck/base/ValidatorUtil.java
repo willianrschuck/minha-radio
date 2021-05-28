@@ -9,10 +9,10 @@ import br.com.willianschuck.util.StringUtils;
 
 public class ValidatorUtil {
 	
-	private static final String MSG_CAMPO_INVALIDO = "O valor %s do campo %s È inv·lido!";
-	private static final String MSG_CAMPO_OBRIGATORIO = "O campo %s È obrigatÛrio!";
-	private static final String MSG_MAX_LENGHT = "O campo %s n„o pode ter mais que %d caracteres!";
-	private static final String MSG_MIN_LENGHT = "O campo %s n„o pode ter menos que %d caracteres!";
+	private static final String MSG_CAMPO_INVALIDO = "O valor %s do campo %s √© inv√°lido!";
+	private static final String MSG_CAMPO_OBRIGATORIO = "O campo %s √© obrigat√≥rio!";
+	private static final String MSG_MAX_LENGHT = "O campo %s n√£o pode ter mais que %d caracteres!";
+	private static final String MSG_MIN_LENGHT = "O campo %s n√£o pode ter menos que %d caracteres!";
 	private static final String MSG_OUT_OF_RANGE = "O valor %s do campo %s deve estar entre %s e %s!";
 
 	private ValidatorUtil() {
@@ -98,7 +98,7 @@ public class ValidatorUtil {
 	public static void validateDateRange(Date dataFinal, String string, boolean b, Date dataInicio) throws InvalidValueException {
 		
 		if (dataFinal.before(dataInicio)) {
-			throw new InvalidValueException(String.format("O valor do campo %s n„o pode ser anterior a %s", string, DateUtil.formatDate(dataInicio)));
+			throw new InvalidValueException(String.format("O valor do campo %s nÔøΩo pode ser anterior a %s", string, DateUtil.formatDate(dataInicio)));
 		}
 		
 	}

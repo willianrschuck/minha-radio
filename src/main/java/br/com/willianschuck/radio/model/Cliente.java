@@ -23,6 +23,10 @@ import javax.persistence.TemporalType;
 public class Cliente extends Entidade {
 	private static final long serialVersionUID = 1L;
 
+	public enum TipoPessoa {
+		FISICA, JURIDICA;
+	}
+	
 	@Id
 	@Column(name = "id")
 	@SequenceGenerator(name = "seq_cliente", sequenceName = "seq_cliente_id", allocationSize = 1)

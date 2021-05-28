@@ -14,7 +14,7 @@ public class EmissoraValidator implements Validator<Emissora> {
 	public void validate(Emissora e) throws InvalidValueException {
 		
 		ValidatorUtil.validate(e.getNomeFantasia(), "nome fantasia", false, 60, 3);
-		ValidatorUtil.validate(e.getRazaoSocial(), "raz„o social", false, 60, 3);
+		ValidatorUtil.validate(e.getRazaoSocial(), "raz√£o social", false, 60, 3);
 		ValidatorUtil.validate(e.getCnpj(), "cnpj", false, 60, 3);
 		
 		enderecoValidator.validate(e.getEndereco());

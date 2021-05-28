@@ -25,8 +25,13 @@ public class JPanelClienteLista extends JPanelBaseList<Cliente> {
 	}
 	
 	@Override
+	protected Cliente novoObjeto() {
+		return clienteService.create();
+	}
+	
+	@Override
 	protected DefaultTableModel getDefaultTableModel() {
-		return new UneditableDefaultTableModel(new Object[] {"Cód.", "Nome", "Telefone", "E-mail", "Estado", "Cidade", "Logradouro", "Bairro", "Número"}, 0);
+		return new UneditableDefaultTableModel(new Object[] {"CÃ³d.", "Nome", "Telefone", "E-mail", "Estado", "Cidade", "Logradouro", "Bairro", "NÃºmero"}, 0);
 	}
 	
 	@Override
